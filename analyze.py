@@ -13,9 +13,9 @@ from scipy.interpolate import RBFInterpolator
 from scipy.optimize import curve_fit
 from scipy.special import erf
 
-from common import (ARUCO, CHART_IDS, COLS, DOT_COLS, DOT_LEVELS, DOT_R, DOT_ROWS, EDGE_HI, EDGE_LO, EDGE_X, H,
-                    IMAGE_EXTS, LUT_SIZE, PITCH, ROOT, ROWS, W, apply_lut, big_blur, chart_perm, delta_e, grain_noise,
-                    lum, make_color_chart, make_edge_chart, marker_corners, patch_colors, radius_map, read_rgb, save_cube, slot_center)
+from common import (ARUCO, CHART_IDS, DOT_COLS, DOT_LEVELS, DOT_R, DOT_ROWS, EDGE_X, H, IMAGE_EXTS, LUT_SIZE, ROOT,
+                    W, apply_lut, big_blur, chart_perm, delta_e, grain_noise, lum, make_color_chart, make_edge_chart,
+                    marker_corners, patch_colors, radius_map, read_rgb, save_cube, slot_center)
 
 GRAIN_HP = 3.0          # high-pass sigma (chart px) used to isolate grain
 LEVEL_EDGES = np.array([0, .15, .3, .45, .6, .75, .9, 1.0])
@@ -279,7 +279,7 @@ def main(folder, name):
         if m.sum() >= 5:
             centers.append(float((lo + hi) / 2))
             table.append(np.median(std[m], 0).tolist())
-    log(f"  grain std by level: " + ", ".join(f"{c:.2f}:{np.round(t, 3).tolist()}" for c, t in zip(centers, table)),
+    log("  grain std by level: " + ", ".join(f"{c:.2f}:{np.round(t, 3).tolist()}" for c, t in zip(centers, table)),
         lines)
 
     save_cube(out_dir / f"{name}.cube", lut, name)

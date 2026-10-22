@@ -1,6 +1,7 @@
 """Build the D Classic / CPM35 approximations from anchors measured in the sample photos (no iPhone needed).
 
-Each anchor = (assumed camera input RGB, measured filtered RGB) for an object in Desktop/filter/*.jpeg.
+Each anchor = (assumed camera input RGB, measured filtered RGB) for an object in the reference photos
+(private photos of people, not included in the repo).
 Inputs are guesses for what a phone would have recorded (whites under warm venue light etc.), so the overall
 warmth is uncertain -> `cast` (0..1) blends from a neutral version of the curves to the full measured cast.
 

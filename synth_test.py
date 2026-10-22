@@ -6,10 +6,20 @@ import numpy as np
 
 import analyze
 import compare
-from common import LUT_SIZE, ROOT, apply_lut, apply_preset, delta_e, load_cube, lum, save_cube, write_rgb
+from common import LUT_SIZE, ROOT, apply_lut, apply_preset, delta_e, load_cube, lum, read_rgb, save_cube, write_rgb
 from make_charts import all_charts
 
 SYN = ROOT / "synth"
+
+
+def kodak_image(name):
+    """Kodak PhotoCD test image (downloaded once into kodak/)."""
+    path = ROOT / "kodak" / f"{name}.png"
+    if not path.exists():
+        import urllib.request
+        path.parent.mkdir(exist_ok=True)
+        urllib.request.urlretrieve(f"https://r0k.us/graphics/kodak/kodak/{name}.png", path)
+    return path
 
 
 def truth_color(c):
@@ -68,12 +78,10 @@ def main():
     print(f"grain sigma: 1.00px vs {rec['grain']['sigma'] * 3024:.2f}px, mono 0.7 vs {rec['grain']['mono']:.2f}")
 
     # end-to-end on a real photo: "dazz" = truth applied, compare with recovered preset
-    src = next((ROOT.parent / "Desktop" / "filter").glob("*00.05.24*"), None)
-    if src is not None:
-        from common import read_rgb
-        photo = read_rgb(src)
-        write_rgb(SYN / "photo_truth.jpg", apply_preset(photo, TRUTH, truth_lut, seed=9), quality=92)
-        compare.main(src, SYN / "photo_truth.jpg", "synth")
+    src = kodak_image("kodim04")
+    photo = read_rgb(src)
+    write_rgb(SYN / "photo_truth.jpg", apply_preset(photo, TRUTH, truth_lut, seed=9), quality=92)
+    compare.main(src, SYN / "photo_truth.jpg", "synth")
 
 
 if __name__ == "__main__":
